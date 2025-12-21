@@ -95,6 +95,35 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  // Fetch single component
+  const fetchComponent = async (id) => {
+    try {
+      const res = await axios.get(`/api/components/${id}`);
+      return res.data;
+    } catch (err) {
+      throw err.response?.data?.message || 'Fetch component failed';
+    }
+  };
+
+  // Reviews
+  const fetchReviews = async (componentId) => {
+    try {
+      const res = await axios.get(`/api/reviews/${componentId}`);
+      return res.data;
+    } catch (err) {
+      throw err.response?.data?.message || 'Fetch reviews failed';
+    }
+  };
+
+  const submitReview = async (componentId, rating, reviewText) => {
+    try {
+      const res = await axios.post(`/api/reviews/${componentId}`, { rating, review: reviewText }, { headers: authHeaders() });
+      return res.data;
+    } catch (err) {
+      throw err.response?.data?.message || 'Submit review failed';
+    }
+  };
+
   return (
     <AuthContext.Provider value={{
       user,
@@ -104,6 +133,9 @@ export const AuthProvider = ({ children }) => {
       register,
       logout,
       fetchComponents,
+      fetchComponent,
+      fetchReviews,
+      submitReview,
       uploadComponent,
       downloadComponent,
       authHeaders, // export for AIStudio or other protected calls

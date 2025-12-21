@@ -2,6 +2,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { AuthContext } from '../context/AuthContext.jsx';
 import { motion } from 'framer-motion';
+import { useNavigate } from 'react-router-dom';
 
 const categories = ["All", "Buttons", "Cards", "Navbars", "Forms", "Modals", "Tables"];
 
@@ -11,6 +12,7 @@ export default function Explore() {
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("All");
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     setLoading(true);
@@ -88,7 +90,10 @@ export default function Explore() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.4 }}
+                onClick={() => navigate(`/component/${comp._id || comp.id}`)}
                 className="bg-gray-900 rounded-lg p-6 shadow-md flex flex-col items-center hover:scale-105 transition cursor-pointer"
+                role="button"
+                title={`Open ${comp.title || 'component'}`}
               >
                 <img
                   src={comp.previewImage || ''}
