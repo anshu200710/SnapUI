@@ -1,47 +1,70 @@
 // src/components/Navbar.jsx
 import React, { useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { AuthContext } from '../context/AuthContext.jsx';
-import { LogOut, User, Home as HomeIcon, Upload as UploadIcon, Star, Bot } from 'lucide-react';
+import { AuthContext, ThemeContext } from '../context/AuthContext.jsx';
+import { LogOut, User, Home as HomeIcon, Bot, Star, Upload, Menu } from 'lucide-react';
 import DarkModeToggle from './DarkModeToggle.jsx';
 
 export default function Navbar() {
   const { user, logout } = useContext(AuthContext);
+  const { theme } = useContext(ThemeContext);
   const navigate = useNavigate();
 
-  const handleLogout = () => {
-    logout();
-    navigate('/');
-  };
-
   return (
-    <nav className="w-full bg-gray-100 dark:bg-gray-900 border-b border-gray-200 dark:border-gray-800 px-4 py-2 flex items-center justify-between shadow transition-colors">
-      <div className="flex items-center gap-4">
-        <DarkModeToggle />
-        <Link to="/" className="flex items-center gap-2 text-xl font-bold text-gradient bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 bg-clip-text text-transparent">
-          <HomeIcon size={22} /> UIForge
-        </Link>
-        <Link to="/explore" className="text-gray-700 dark:text-gray-200 hover:text-blue-500 dark:hover:text-blue-400 font-medium">Explore</Link>
-        <Link to="/ai-studio" className="text-gray-700 dark:text-gray-200 hover:text-pink-500 dark:hover:text-pink-400 font-medium flex items-center gap-1"><Bot size={18}/>AI Studio</Link>
-        {user?.role === 'creator' && (
-          <>
-            <Link to="/upload" className="text-gray-700 dark:text-gray-200 hover:text-blue-500 dark:hover:text-blue-400 font-medium flex items-center gap-1"><UploadIcon size={18}/>Upload</Link>
-            <Link to="/dashboard" className="text-gray-700 dark:text-gray-200 hover:text-yellow-500 dark:hover:text-yellow-400 font-medium flex items-center gap-1"><Star size={18}/>Dashboard</Link>
-          </>
-        )}
-      </div>
-      <div className="flex items-center gap-4">
-        {user ? (
-          <>
-            <span className="text-gray-800 dark:text-gray-300 flex items-center gap-1"><User size={18}/>{user.username}</span>
-            <button onClick={handleLogout} className="text-red-500 dark:text-red-400 hover:text-red-700 dark:hover:text-red-600 flex items-center gap-1"><LogOut size={18}/>Logout</button>
-          </>
-        ) : (
-          <>
-            <Link to="/login" className="text-gray-700 dark:text-gray-200 hover:text-blue-500 dark:hover:text-blue-400 font-medium">Login</Link>
-            <Link to="/register" className="text-gray-700 dark:text-gray-200 hover:text-blue-500 dark:hover:text-blue-400 font-medium">Register</Link>
-          </>
-        )}
+    <nav className="sticky top-0 z-50 w-full backdrop-blur-md border-b transition-colors duration-300 
+      bg-white/80 border-gray-100 dark:bg-black/80 dark:border-neutral-800">
+      <div className="max-w-7xl mx-auto px-6 md:px-12 py-4 flex items-center justify-between">
+        
+        {/* Left Side: Logo & Primary Links */}
+        <div className="flex items-center gap-8">
+          <Link to="/" className="flex items-center gap-2 text-2xl font-bold bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 bg-clip-text text-transparent">
+            SnapUI
+          </Link>
+          
+          <div className="hidden md:flex items-center gap-6 text-sm font-medium">
+            <Link to="/explore" className="text-gray-600 dark:text-gray-400 hover:text-indigo-600 transition">Explore</Link>
+            <Link to="/ai-studio" className="flex items-center gap-1 text-gray-600 dark:text-gray-400 hover:text-pink-500 transition">
+              <Bot size={16}/> AI Studio
+            </Link>
+            {user?.role === 'creator' && (
+              <Link to="/dashboard" className="flex items-center gap-1 text-gray-600 dark:text-gray-400 hover:text-yellow-500 transition">
+                <Star size={16}/> Dashboard
+              </Link>
+            )}
+          </div>
+        </div>
+
+        {/* Right Side: Actions & Theme Toggle */}
+        <div className="flex items-center gap-4">
+          <DarkModeToggle />
+          
+          <div className="hidden md:flex items-center gap-3">
+            {user ? (
+              <>
+                <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-gray-100 dark:bg-neutral-800 text-sm">
+                  <User size={14} /> <span className="font-medium">{user.username}</span>
+                </div>
+                <button onClick={() => { logout(); navigate('/'); }} 
+                  className="text-sm font-medium text-red-500 hover:text-red-600 flex items-center gap-1">
+                  <LogOut size={16}/> Logout
+                </button>
+              </>
+            ) : (
+              <>
+                <Link to="/login" className="text-indigo-600 bg-indigo-50 dark:bg-indigo-500/10 px-5 py-2 rounded-full text-sm font-medium hover:bg-indigo-100 transition">
+                  Login
+                </Link>
+                <Link to="/register" className="bg-indigo-600 text-white px-5 py-2 rounded-full text-sm font-medium hover:bg-indigo-700 shadow-lg shadow-indigo-500/20 transition">
+                  Sign up
+                </Link>
+              </>
+            )}
+          </div>
+          
+          <button className="md:hidden text-gray-600 dark:text-gray-300">
+            <Menu size={24} />
+          </button>
+        </div>
       </div>
     </nav>
   );
