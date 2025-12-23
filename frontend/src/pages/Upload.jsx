@@ -1,6 +1,6 @@
 // src/pages/Upload.jsx
 import React, { useState, useContext } from 'react';
-import { AuthContext } from '../context/AuthContext.jsx';
+import { AuthContext, ThemeContext } from '../context/AuthContext.jsx';
 import { motion } from 'framer-motion';
 import MonacoEditor from '@monaco-editor/react';
 
@@ -8,6 +8,7 @@ const initialCode = { html: '', css: '', js: '', react: '', tailwind: '' };
 
 export default function Upload() {
   const { uploadComponent, user } = useContext(AuthContext);
+  const { theme } = useContext(ThemeContext);
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [category, setCategory] = useState('');
@@ -46,7 +47,7 @@ export default function Upload() {
   };
 
   return (
-    <div className="max-w-2xl mx-auto px-4 py-8">
+    <div className={`max-w-2xl mx-auto px-4 py-8 ${theme === 'dark' ? 'bg-black' : 'bg-white'}`}>
       <motion.h2
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}

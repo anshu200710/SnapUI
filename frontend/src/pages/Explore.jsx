@@ -1,6 +1,6 @@
 // src/pages/Explore.jsx
 import React, { useState, useEffect, useContext } from 'react';
-import { AuthContext } from '../context/AuthContext.jsx';
+import { AuthContext, ThemeContext } from '../context/AuthContext.jsx';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 
@@ -8,6 +8,7 @@ const categories = ["All", "Buttons", "Cards", "Navbars", "Forms", "Modals", "Ta
 
 export default function Explore() {
   const { fetchComponents } = useContext(AuthContext);
+  const { theme } = useContext(ThemeContext);
   const [components, setComponents] = useState([]);
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("All");
@@ -48,7 +49,7 @@ export default function Explore() {
     : [];
 
   return (
-    <div className="max-w-6xl mx-auto px-4 py-8">
+    <div className={`max-w-6xl mx-auto px-4 py-8 ${theme === 'dark' ? 'bg-black' : 'bg-white'}`}>
       <motion.h2
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}

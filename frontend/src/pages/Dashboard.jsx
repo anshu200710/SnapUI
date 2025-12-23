@@ -1,10 +1,11 @@
 // src/pages/Dashboard.jsx
 import React, { useEffect, useState, useContext } from 'react';
-import { AuthContext } from '../context/AuthContext.jsx';
+import { AuthContext, ThemeContext } from '../context/AuthContext.jsx';
 import { motion } from 'framer-motion';
 
 export default function Dashboard() {
   const { fetchComponents, user } = useContext(AuthContext);
+  const { theme } = useContext(ThemeContext);
   const [myComponents, setMyComponents] = useState([]);
   const [loading, setLoading] = useState(false);
 
@@ -16,7 +17,7 @@ export default function Dashboard() {
   }, [fetchComponents, user]);
 
   return (
-    <div className="max-w-4xl mx-auto px-4 py-8">
+    <div className={`max-w-4xl mx-auto px-4 py-8 ${theme === 'dark' ? 'bg-black' : 'bg-white'}`}>
       <motion.h2
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}

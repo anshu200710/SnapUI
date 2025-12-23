@@ -1,7 +1,7 @@
 // src/pages/ComponentDetail.jsx
 import React, { useEffect, useState, useContext } from 'react';
 import { useParams } from 'react-router-dom';
-import { AuthContext } from '../context/AuthContext.jsx';
+import { AuthContext, ThemeContext } from '../context/AuthContext.jsx';
 import { motion } from 'framer-motion';
 import MonacoEditor from '@monaco-editor/react';
 
@@ -10,6 +10,7 @@ const codeTabs = ["HTML", "CSS", "JS", "React", "Tailwind"];
 export default function ComponentDetail() {
   const { id } = useParams();
   const { fetchComponent, fetchReviews, downloadComponent, submitReview, user } = useContext(AuthContext);
+  const { theme } = useContext(ThemeContext);
   const [component, setComponent] = useState(null);
   const [activeTab, setActiveTab] = useState("React");
   const [reviews, setReviews] = useState([]);
@@ -65,7 +66,7 @@ export default function ComponentDetail() {
   if (!component) return <div className="text-center text-gray-400 py-10">Component not found.</div>;
 
   return (
-    <div className="max-w-4xl mx-auto px-4 py-8">
+    <div className={`max-w-4xl mx-auto px-4 py-8 ${theme === 'dark' ? 'bg-black' : 'bg-white'}`}>
       <motion.h2
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}

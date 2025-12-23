@@ -1,27 +1,35 @@
 // src/components/DarkModeToggle.jsx
-import React, { useEffect, useState } from 'react';
-import { Moon, Sun } from 'lucide-react';
+import React, { useContext, useEffect } from 'react';
+import { Sun, Moon } from 'lucide-react';
+import { ThemeContext } from '../context/AuthContext.jsx';
 
 export default function DarkModeToggle() {
-  const [dark, setDark] = useState(() => localStorage.getItem('theme') === 'dark');
+  const { theme, setTheme } = useContext(ThemeContext);
 
+  // Sync Tailwind's 'dark' class with the context state
   useEffect(() => {
-    if (dark) {
+    if (theme === 'dark') {
       document.documentElement.classList.add('dark');
-      localStorage.setItem('theme', 'dark');
     } else {
       document.documentElement.classList.remove('dark');
-      localStorage.setItem('theme', 'light');
     }
-  }, [dark]);
+  }, [theme]);
+
+  const toggleTheme = () => {
+    setTheme(prev => (prev === 'dark' ? 'light' : 'dark'));
+  };
 
   return (
     <button
-      onClick={() => setDark(d => !d)}
-      className="p-2 rounded-full bg-gray-800 hover:bg-gray-700 text-yellow-400 flex items-center justify-center"
-      title={dark ? 'Switch to light mode' : 'Switch to dark mode'}
+      onClick={toggleTheme}
+      className="p-2 rounded-lg transition-colors bg-gray-200 dark:bg-gray-800 text-gray-800 dark:text-yellow-400 hover:ring-2 ring-blue-400 outline-none"
+      aria-label="Toggle Dark Mode"
     >
-      {dark ? <Sun size={18} /> : <Moon size={18} />}
+      {theme === 'dark' ? (
+        <Sun size={20} strokeWidth={2.5} />
+      ) : (
+        <Moon size={20} strokeWidth={2.5} />
+      )}
     </button>
   );
 }

@@ -1,11 +1,12 @@
 // src/pages/Register.jsx
 import React, { useState, useContext } from 'react';
-import { AuthContext } from '../context/AuthContext.jsx';
+import { AuthContext, ThemeContext } from '../context/AuthContext.jsx';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 
 export default function Register() {
   const { register } = useContext(AuthContext);
+  const { theme } = useContext(ThemeContext);
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -29,7 +30,7 @@ export default function Register() {
   };
 
   return (
-    <div className="max-w-md mx-auto px-4 py-8">
+    <div className={`max-w-md mx-auto px-4 py-8 ${theme === 'dark' ? 'bg-black' : 'bg-white'}`}>
       <motion.h2
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}

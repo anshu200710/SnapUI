@@ -1,1 +1,11 @@
+
+/* src/index.css */
 @import "tailwindcss";
+
+/* This is the v4 way to enable class-based dark mode */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* Optional: Add a smooth transition for theme changes */
+body {
+  @apply transition-colors duration-300;
+}

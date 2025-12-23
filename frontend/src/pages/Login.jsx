@@ -1,11 +1,12 @@
 // src/pages/Login.jsx
 import React, { useState, useContext } from 'react';
-import { AuthContext } from '../context/AuthContext.jsx';
+import { AuthContext, ThemeContext } from '../context/AuthContext.jsx';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 
 export default function Login() {
   const { login } = useContext(AuthContext);
+  const { theme } = useContext(ThemeContext);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
@@ -27,7 +28,7 @@ export default function Login() {
   };
 
   return (
-    <div className="max-w-md mx-auto px-4 py-8">
+    <div className={`max-w-md mx-auto px-4 py-8 ${theme === 'dark' ? 'bg-black' : 'bg-white'}`}>
       <motion.h2
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}

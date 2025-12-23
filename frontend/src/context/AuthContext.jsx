@@ -4,13 +4,36 @@ import axios from 'axios';
 
 export const AuthContext = createContext();
 
+// Theme context for global dark/light mode
+export const ThemeContext = createContext();
+
+export const ThemeProvider = ({ children }) => {
+  const [theme, setTheme] = useState(() => localStorage.getItem('theme') || 'light');
+
+  useEffect(() => {
+    if (theme === 'dark') {
+      document.documentElement.classList.add('dark');
+      localStorage.setItem('theme', 'dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+      localStorage.setItem('theme', 'light');
+    }
+  }, [theme]);
+
+  return (
+    <ThemeContext.Provider value={{ theme, setTheme }}>
+      {children}
+    </ThemeContext.Provider>
+  );
+};
+
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [token, setToken] = useState(localStorage.getItem('token') || '');
   const [loading, setLoading] = useState(false);
 
   // Set axios baseURL (optional, adjust to your backend)
-  axios.defaults.baseURL = 'http://localhost:5000'; // <-- your backend URL
+  axios.defaults.baseURL = 'http://localhost:5000';
 
   // Attach token to axios headers
   useEffect(() => {
@@ -138,7 +161,7 @@ export const AuthProvider = ({ children }) => {
       submitReview,
       uploadComponent,
       downloadComponent,
-      authHeaders, // export for AIStudio or other protected calls
+      authHeaders,
     }}>
       {children}
     </AuthContext.Provider>
