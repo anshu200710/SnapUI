@@ -1,6 +1,5 @@
 // src/pages/AIStudio.jsx
-import React, { useState, useContext } from 'react';
-import { AuthContext } from '../context/AuthContext.jsx';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import axios from 'axios';
 
@@ -11,6 +10,10 @@ export default function AIStudio() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
+  // Use full URL for local dev if needed:
+  // const API_BASE = 'http://localhost:5000';
+  const API_BASE = '';
+
   const handleGenerate = async (type) => {
     setLoading(true);
     setError('');
@@ -18,13 +21,17 @@ export default function AIStudio() {
     try {
       let res;
       if (type === 'text') {
-        res = await axios.post('/api/ai/generate/text', { prompt });
+        res = await axios.post(`${API_BASE}/api/ai/generate/text`, { prompt });
       } else {
-        res = await axios.post('/api/ai/generate/image', { imageUrl });
+        res = await axios.post(`${API_BASE}/api/ai/generate/image`, { imageUrl });
       }
       setResult(res.data);
     } catch (err) {
-      setError('Failed to generate UI');
+      if (err.response && err.response.data && err.response.data.message) {
+        setError(err.response.data.message);
+      } else {
+        setError('Failed to generate UI');
+      }
     } finally {
       setLoading(false);
     }

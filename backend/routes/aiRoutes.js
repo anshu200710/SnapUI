@@ -1,12 +1,12 @@
 // routes/aiRoutes.js
 import express from 'express';
 import { generateUIFromText, generateUIFromImage } from '../controllers/aiController.js';
-import { protect, authorizeRoles } from '../middleware/authMiddleware.js';
+// import { protect, authorizeRoles } from '../middleware/authMiddleware.js';
 
-const router = express.Router();
+const AIrouter = express.Router();
 
-// AI endpoints (protected, creators and admins)
-router.post('/generate/text', protect, authorizeRoles('creator', 'admin'), generateUIFromText);
-router.post('/generate/image', protect, authorizeRoles('creator', 'admin'), generateUIFromImage);
+// AI endpoints (unprotected for now)
+AIrouter.post('/generate/text', generateUIFromText);
+AIrouter.post('/generate/image', generateUIFromImage);
 
-export default router;
+export default AIrouter;
